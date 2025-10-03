@@ -7,6 +7,7 @@ services:
       - "3000:3000"
     volumes:
       - grafana-storage:/var/lib/grafana
+      - ./datasource-provisioning.yaml:/etc/grafana/provisioning/datasources/datasource-provisioning.yaml
     environment:
       - GF_SECURITY_ADMIN_USER=admin
       - GF_SECURITY_ADMIN_PASSWORD=admin
@@ -21,8 +22,21 @@ services:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
       - prometheus-storage:/prometheus
 
+  loki:
+    image: grafana/loki:latest
+    container_name: loki
+    restart: unless-stopped
+    ports:
+      - "3100:3100"
+    command: -config.file=/etc/loki/local-config.yaml
+    volumes:
+      - ./loki-config.yaml:/etc/loki/local-config.yaml
+      - loki-storage:/loki
+
   influxdb:
     image: influxdb:2
+    container_name: influxdb
+    restart: unless-stopped
     ports:
       - 8086:8086
     environment:
@@ -43,5 +57,6 @@ services:
 volumes:
   grafana-storage:
   prometheus-storage:
+  loki-storage:
   influxdb2-data:
   influxdb2-config:

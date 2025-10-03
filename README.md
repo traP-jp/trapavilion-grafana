@@ -10,11 +10,7 @@ docker compose up -d
 
 Grafanaにアクセスする。ユーザーネームとパスワードは両方とも`admin`。
 
-### Prometheusの設定
-
-Data sources → Add data source → Prometheusを選択
-
-- URL: `http://prometheus:9090`
+Prometheusとlokiは既に設定されている。
 
 ### InfluxDBの設定
 
@@ -25,3 +21,6 @@ Data sources → Add data source → InfluxDBを選択
   - Database: `home`
   - User: `admin`
   - Password: `MyInitialAdminToken0==`
+
+必要に応じてInfluxDBのUIから設定を変更してください。
+運用時に必要な操作がある場合は、ここに追記して頂けると助かります。
