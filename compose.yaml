@@ -54,6 +54,13 @@ services:
         source: influxdb2-config
         target: /etc/influxdb2
 
+  time_table_exporter:
+    build: ./time_table
+    container_name: time_table_exporter
+    restart: unless-stopped
+    expose:
+      - "9100"
+
 volumes:
   grafana-storage:
   prometheus-storage:
