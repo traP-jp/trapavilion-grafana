@@ -54,6 +54,19 @@ services:
         source: influxdb2-config
         target: /etc/influxdb2
 
+  switchbot_exporter:
+    # image: nasa9084/switchbot-exporter:v0.5.1
+    build:
+      context: ./switchbot-exporter
+      dockerfile: Dockerfile
+    container_name: switchbot_exporter
+    restart: unless-stopped
+    expose:
+      - 8080
+    environment:
+      SWITCHBOT_OPENTOKEN: your_open_token_here
+      SWITCHBOT_SECRETKEY: your_secret_key_here
+
 volumes:
   grafana-storage:
   prometheus-storage:
