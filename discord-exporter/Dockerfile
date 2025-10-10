@@ -1,4 +1,4 @@
-FROM oven/bun:1-distroless
+FROM oven/bun:1-slim
 
 WORKDIR /app
 COPY . .
