@@ -6,5 +6,5 @@ await startBot();
 export default {
   fetch: app.fetch,
   hostname: "0.0.0.0",
-  idleTimeout: 600, // 10 minutes
+  idleTimeout: 255,
 };
