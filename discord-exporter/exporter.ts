@@ -125,6 +125,9 @@ export const exportToPrometheus = (): string => {
   for (const photo of exportData.photos) {
     result += `discord_photos_total{user="${photo.user}"} ${photo.count}\n`;
   }
+  if (exportData.photos.length === 0) {
+    result += 'discord_photos_total 0\n';
+  }
 
   return result;
 };
