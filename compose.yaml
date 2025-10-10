@@ -7,6 +7,7 @@ services:
       - "3000:3000"
     volumes:
       - grafana-storage:/var/lib/grafana
+      - ./grafana.ini:/etc/grafana/grafana.ini:ro
       - ./datasource-provisioning.yaml:/etc/grafana/provisioning/datasources/datasource-provisioning.yaml
     environment:
       - GF_SECURITY_ADMIN_USER=admin
