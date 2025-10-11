@@ -24,3 +24,7 @@ Data sources → Add data source → InfluxDBを選択
 
 必要に応じてInfluxDBのUIから設定を変更してください。
 運用時に必要な操作がある場合は、ここに追記して頂けると助かります。
+
+## ダッシュボードの追加
+
+`dashboards`フォルダに適切なディレクトリを切ってJSONファイルを追加し、`dashboard-provisioning.yaml`に追記してください。
