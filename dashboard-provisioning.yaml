@@ -10,3 +10,13 @@ providers:
     options:
       path: /var/lib/grafana/dashboards/traq
       foldersFromFilesStructure: true
+
+  - name: "Main"
+    folder: ""
+    type: file
+    disableDeletion: true
+    updateIntervalSeconds: 10
+    allowUiUpdates: true
+    options:
+      path: /var/lib/grafana/dashboards/main
+      foldersFromFilesStructure: true
