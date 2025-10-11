@@ -24,7 +24,7 @@
         {
             "datasource": {
                 "type": "yesoreyeram-infinity-datasource",
-                "uid": "grafanacloud-infinity"
+                "uid": "ff0pa0n3hboxsf"
             },
             "fieldConfig": {
                 "defaults": {
@@ -38,7 +38,7 @@
                         "axisColorMode": "text",
                         "axisLabel": "",
                         "axisPlacement": "auto",
-                        "barAlignment": 0,
+                        "barAlignment": -1,
                         "barWidthFactor": 0.6,
                         "drawStyle": "line",
                         "fillOpacity": 20,
@@ -54,7 +54,7 @@
                             "fill": "solid"
                         },
                         "lineWidth": 3,
-                        "pointSize": 6,
+                        "pointSize": 9,
                         "scaleDistribution": {
                             "type": "linear"
                         },
@@ -69,7 +69,8 @@
                             "mode": "off"
                         }
                     },
-                    "fieldMinMax": true,
+                    "decimals": 0,
+                    "fieldMinMax": false,
                     "mappings": [],
                     "thresholds": {
                         "mode": "absolute",
@@ -107,13 +108,14 @@
                     "sort": "none"
                 }
             },
-            "pluginVersion": "12.3.0-18186912471.patch2",
+            "pluginVersion": "12.2.0",
             "targets": [
                 {
                     "columns": [
                         {
                             "selector": "key",
                             "text": "Time",
+                            "timestampFormat": "",
                             "type": "timestamp"
                         },
                         {
@@ -153,7 +155,7 @@
         {
             "datasource": {
                 "type": "yesoreyeram-infinity-datasource",
-                "uid": "grafanacloud-infinity"
+                "uid": "ff0pa0n3hboxsf"
             },
             "fieldConfig": {
                 "defaults": {
@@ -205,7 +207,7 @@
                 "showThresholdMarkers": true,
                 "sizing": "auto"
             },
-            "pluginVersion": "12.3.0-18186912471.patch2",
+            "pluginVersion": "12.2.0",
             "targets": [
                 {
                     "columns": [],
@@ -252,5 +254,5 @@
     "timezone": "browser",
     "title": "CTF-traPavilion",
     "uid": "un8p7t9",
-    "version": 7
+    "version": 4
 }
