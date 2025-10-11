@@ -70,6 +70,16 @@ services:
       - SPEEDTEST_TIMEOUT=90s
       - SPEEDTEST_ARGS=--progress=no
 
+  switchbot_exporter:
+    image: nasa9084/switchbot-exporter:v0.5.1
+    container_name: switchbot_exporter
+    restart: unless-stopped
+    expose:
+      - 8080
+    environment:
+      SWITCHBOT_OPENTOKEN: your_open_token_here
+      SWITCHBOT_SECRETKEY: your_secret_key_here
+
 volumes:
   grafana-storage:
   prometheus-storage:

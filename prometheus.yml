@@ -59,7 +59,21 @@ scrape_configs:
     scrape_interval: 10m
     scrape_timeout: 90s
     static_configs:
-      - targets: 
+      - targets:
           - network-exporter:9801
         labels:
           app: "network-exporter"
+
+  - job_name: "switchbot"
+    scrape_interval: 1m # not to reach API rate limit
+    metrics_path: /metrics
+    http_sd_configs:
+      - url: http://switchbot_exporter:8080/discover
+        refresh_interval: 1d # no need to check for new devices very often
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: switchbot_exporter:8080 # The switchbot exporter's real ip/port

@@ -34,3 +34,9 @@ Data sources → Add data source → InfluxDBを選択
 ### network-exporter
 
 リクエストを送りすぎないように、10m毎にしています。状況に応じて調整してください。
+
+### switchbot-exporter
+
+`compose.yaml`に認証情報を入れる。
+
+取り方はSwitchbotアプリのバージョン情報を数回タップすると出てくるメニューから。
