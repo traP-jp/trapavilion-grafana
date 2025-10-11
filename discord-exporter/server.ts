@@ -10,7 +10,7 @@ app.use("*", cors());
 app.get("/", (c) => c.text("Hello! This is Discord Exporter."));
 
 app.get("/photos", (c) => {
-  return c.html(`
+    return c.html(`
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -23,6 +23,7 @@ app.get("/photos", (c) => {
             padding: 0;
             height: 100vh;
             overflow: hidden;
+            background-color: #181b1f;
         }
         .photos-container {
             display: flex;
@@ -90,19 +91,21 @@ app.get("/photos", (c) => {
 });
 
 app.get("/photos/latest-id", async (c) => {
-  const reqLatestId = c.req.query("latestId");
-  while (reqLatestId === getLatestPhotoId()) {
-    await Bun.sleep(1000);
-  }
-  return c.json({ latestId: getLatestPhotoId() });
+    const reqLatestId = c.req.query("latestId");
+    while (reqLatestId === getLatestPhotoId()) {
+        await Bun.sleep(1000);
+    }
+    return c.json({ latestId: getLatestPhotoId() });
 });
 
 app.get("/metrics", (c) => {
-  const metrics = exportToPrometheus();
-  return c.text(metrics, 200, { "Content-Type": "text/plain; version=1.0.0" });
+    const metrics = exportToPrometheus();
+    return c.text(metrics, 200, {
+        "Content-Type": "text/plain; version=1.0.0",
+    });
 });
 
 app.get("/rss.xml", (c) => {
-  const rss = exportToRSS();
-  return c.text(rss, 200, { "Content-Type": "application/rss+xml" });
+    const rss = exportToRSS();
+    return c.text(rss, 200, { "Content-Type": "application/rss+xml" });
 });
