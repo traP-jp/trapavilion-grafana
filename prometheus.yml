@@ -36,3 +36,10 @@ scrape_configs:
       - targets: ["https://trapavilion-grafana-discord-exporter.trap.show"]
         labels:
           app: "discord-exporter"
+
+  - job_name: "network-exporter"
+    metrics_path: /metrics
+    static_configs:
+      - targets: ["localhost:9801"]
+        labels:
+          app: "network-exporter"

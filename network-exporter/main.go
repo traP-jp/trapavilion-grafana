@@ -43,7 +43,7 @@ type speedtestResult struct {
 	Ping       pingResult     `json:"ping"`
 	Download   transferResult `json:"download"`
 	Upload     transferResult `json:"upload"`
-	PacketLoss float64        `json:"packetLoss"`
+	PacketLoss *float64       `json:"packetLoss"`
 }
 
 type exporter struct {
@@ -68,6 +68,8 @@ func newExporter() *exporter {
 		cmd = "speedtest"
 	}
 
+	extraArgs := strings.Fields(strings.TrimSpace(os.Getenv("SPEEDTEST_ARGS")))
+
 	timeout := 90 * time.Second
 	if v := strings.TrimSpace(os.Getenv("SPEEDTEST_TIMEOUT")); v != "" {
 		if parsed, err := time.ParseDuration(v); err == nil {
@@ -79,7 +81,7 @@ func newExporter() *exporter {
 
 	return &exporter{
 		command: cmd,
-		args:    []string{"-f", "json-pretty"},
+		args:    append([]string{"-f", "json-pretty", "--accept-license"}, extraArgs...),
 		timeout: timeout,
 		downloadBandwidth: prometheus.NewDesc(
 			"speedtest_download_bandwidth_bits_per_second",
@@ -202,12 +204,18 @@ func (e *exporter) Collect(ch chan<- prometheus.Metric) {
 	}
 
 	ch <- prometheus.MustNewConstMetric(e.pingJitter, prometheus.GaugeValue, result.Ping.Jitter/1000.0)
-	ch <- prometheus.MustNewConstMetric(e.packetLoss, prometheus.GaugeValue, result.PacketLoss)
+	packetLoss := 0.0
+	if result.PacketLoss != nil {
+		packetLoss = *result.PacketLoss
+	}
+	ch <- prometheus.MustNewConstMetric(e.packetLoss, prometheus.GaugeValue, packetLoss)
 	ch <- prometheus.MustNewConstMetric(e.scrapeSuccess, prometheus.GaugeValue, 1)
 	ch <- prometheus.MustNewConstMetric(e.scrapeDuration, prometheus.GaugeValue, time.Since(start).Seconds())
 }
 
 func (e *exporter) runSpeedtest(ctx context.Context) (*speedtestResult, error) {
+	fmt.Printf("running command: %s %s\n", e.command, strings.Join(e.args, " "))
+
 	cmd := exec.CommandContext(ctx, e.command, e.args...)
 	output, err := cmd.CombinedOutput()
 	if err != nil {
@@ -226,6 +234,8 @@ func (e *exporter) runSpeedtest(ctx context.Context) (*speedtestResult, error) {
 	if result.Download.Bandwidth == 0 && result.Upload.Bandwidth == 0 {
 		return nil, errors.New("speedtest output missing bandwidth data")
 	}
+
+	fmt.Printf("speedtest result: %+v\n", result)
 
 	return &result, nil
 }

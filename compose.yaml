@@ -55,6 +55,18 @@ services:
         source: influxdb2-config
         target: /etc/influxdb2
 
+  network-exporter:
+    build:
+      context: ./network-exporter
+    container_name: network-exporter
+    restart: unless-stopped
+    ports:
+      - "9801:9801"
+    environment:
+      - LISTEN_ADDRESS=:9801
+      - SPEEDTEST_TIMEOUT=90s
+      - SPEEDTEST_ARGS=--progress=no
+
 volumes:
   grafana-storage:
   prometheus-storage:
