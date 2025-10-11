@@ -28,3 +28,9 @@ Data sources → Add data source → InfluxDBを選択
 ## ダッシュボードの追加
 
 `dashboards`フォルダに適切なディレクトリを切ってJSONファイルを追加し、`dashboard-provisioning.yaml`に追記してください。
+
+## 運用上の注意
+
+### network-exporter
+
+リクエストを送りすぎないように、10m毎にしています。状況に応じて調整してください。
