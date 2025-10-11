@@ -10,3 +10,13 @@ providers:
     options:
       path: /var/lib/grafana/dashboards/traq
       foldersFromFilesStructure: true
+
+  - name: "Network"
+    folder: ""
+    type: file
+    disableDeletion: true
+    updateIntervalSeconds: 10
+    allowUiUpdates: false
+    options:
+      path: /var/lib/grafana/dashboards/network
+      foldersFromFilesStructure: true
