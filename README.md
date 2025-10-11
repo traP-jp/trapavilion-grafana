@@ -29,6 +29,11 @@ Data sources → Add data source → InfluxDBを選択
 
 `dashboards`フォルダに適切なディレクトリを切ってJSONファイルを追加し、`dashboard-provisioning.yaml`に追記してください。
 
+## Plugins
+### Infinity
+1. Administration > Plugins and data > Plugins から「Infinity」を選択し install する．(http://localhost:3000/plugins/yesoreyeram-infinity-datasource)
+2. Connections > Data Source > Add new data source から「Infinity」を選択し「Save & Test」を実行する (http://localhost:3000/connections/datasources/edit/ff0pbd4axzf28d)
+
 ## 運用上の注意
 
 ### network-exporter
