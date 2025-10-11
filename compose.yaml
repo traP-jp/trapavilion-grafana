@@ -9,6 +9,9 @@ services:
       - grafana-storage:/var/lib/grafana
       - ./grafana.ini:/etc/grafana/grafana.ini:ro
       - ./datasource-provisioning.yaml:/etc/grafana/provisioning/datasources/datasource-provisioning.yaml
+      - ./dashboards:/var/lib/grafana/dashboards
+      - ./dashboard-provisioning.yaml:/etc/grafana/provisioning/dashboards/dashboard-provisioning.yaml
+
     environment:
       - GF_SECURITY_ADMIN_USER=admin
       - GF_SECURITY_ADMIN_PASSWORD=admin
