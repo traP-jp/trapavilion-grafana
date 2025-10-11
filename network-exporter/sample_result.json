@@ -1,0 +1,55 @@
+{
+    "type": "result",
+    "timestamp": "2025-10-11T00:49:28Z",
+    "ping": {
+        "jitter": 11.272,
+        "latency": 44.953,
+        "low": 27.909,
+        "high": 53.925
+    },
+    "download": {
+        "bandwidth": 2062203,
+        "bytes": 18529373,
+        "elapsed": 9507,
+        "latency": {
+            "iqm": 100.054,
+            "low": 28.237,
+            "high": 325.543,
+            "jitter": 30.136
+        }
+    },
+    "upload": {
+        "bandwidth": 1112497,
+        "bytes": 15605800,
+        "elapsed": 14501,
+        "latency": {
+            "iqm": 791.327,
+            "low": 93.929,
+            "high": 1644.157,
+            "jitter": 90.132
+        }
+    },
+    "packetLoss": 0,
+    "isp": "NTT Docomo",
+    "interface": {
+        "internalIp": "172.31.138.110",
+        "name": "eth0",
+        "macAddr": "00:15:5D:9E:DA:C9",
+        "isVpn": false,
+        "externalIp": "49.109.1.118"
+    },
+    "server": {
+        "id": 69575,
+        "host": "ty-bgp-speedtest.nearoute.io",
+        "port": 8080,
+        "name": "Nearoute Limited",
+        "location": "Tokyo",
+        "country": "Japan",
+        "ip": "209.146.123.56"
+    },
+    "result": {
+        "id": "4cd90215-fc0d-43d5-ac71-ec2b98732d19",
+        "url": "https://www.speedtest.net/result/c/4cd90215-fc0d-43d5-ac71-ec2b98732d19",
+        "persisted": true
+    }
+}
