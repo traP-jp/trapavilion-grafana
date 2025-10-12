@@ -96,13 +96,15 @@ const syncState = async () => {
     }
 
     if (message.channelId === typedEnv.DISCORD_ANNOUNCEMENT_CHANNEL_ID) {
-      announcements.push({
-        url: message.url,
-        content: message.content,
-        author: message.author.tag,
-        date: message.createdAt,
-        imageUrl: message.attachments.first()?.url,
-      });
+      if (!message.flags.has(MessageFlags.HasThread)) {
+        announcements.push({
+          url: message.url,
+          content: message.content,
+          author: message.author.tag,
+          date: message.createdAt,
+          imageUrl: message.attachments.first()?.url,
+        });
+      }
     }
 
     if (message.channelId === typedEnv.DISCORD_PHOTO_CHANNEL_ID) {
@@ -160,14 +162,16 @@ export const startBot = async () => {
     addMessageData({ user: message.author.tag, count: 1 });
 
     if (message.channelId === typedEnv.DISCORD_ANNOUNCEMENT_CHANNEL_ID) {
-      const announcement: AnnouncementData = {
-        url: message.url,
-        content: message.content,
-        author: message.author.tag,
-        date: message.createdAt,
-        imageUrl: message.attachments.first()?.url,
-      };
-      console.log("New announcement:", announcement);
+      if (!message.flags.has(MessageFlags.HasThread)) {
+        const announcement: AnnouncementData = {
+          url: message.url,
+          content: message.content,
+          author: message.author.tag,
+          date: message.createdAt,
+          imageUrl: message.attachments.first()?.url,
+        };
+        console.log("New announcement:", announcement);
+      }
     }
 
     if (

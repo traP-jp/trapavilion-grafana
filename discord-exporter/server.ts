@@ -107,5 +107,6 @@ app.get("/metrics", (c) => {
 
 app.get("/rss.xml", (c) => {
     const rss = exportToRSS();
+
     return c.text(rss, 200, { "Content-Type": "application/rss+xml" });
 });

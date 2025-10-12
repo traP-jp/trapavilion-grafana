@@ -126,7 +126,7 @@ export const exportToPrometheus = (): string => {
     result += `discord_photos_total{user="${photo.user}"} ${photo.count}\n`;
   }
   if (exportData.photos.length === 0) {
-    result += 'discord_photos_total 0\n';
+    result += "discord_photos_total 0\n";
   }
 
   return result;
@@ -145,17 +145,22 @@ export function exportToRSS(): string {
       (a, b) => b.date.getTime() - a.date.getTime(),
     )
   ) {
+    if (announcement.content.trim() === "") {
+      continue;
+    }
+
     const title =
       announcement.content.split("\n")[0]?.match(/^#+\s+(.*)/)?.[1] ??
         (announcement.content.split("\n").length === 1
           ? announcement.content
-          : "");
-    const description = title.length > 0
-      ? announcement.content.split("\n").slice(1).join("\n")
+          : "no title");
+    const description = title !== "no title"
+      ? announcement.content.split("\n").slice(1).join("　")
       : announcement.content;
+
     feed.item({
       title,
-      description,
+      description: description || "(no content)",
       url: announcement.url,
       date: announcement.date,
       enclosure: announcement.imageUrl
