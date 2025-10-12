@@ -1,0 +1,21 @@
+{
+  "name": "discord-exporter",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/rss": "^0.0.32"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "arktype": "^2.1.22",
+    "discord.js": "^14.22.1",
+    "emoji-unicode-map": "^1.1.12",
+    "hono": "^4.9.9",
+    "node-emoji": "^2.2.0",
+    "rss": "^1.2.2"
+  }
+}

@@ -7,7 +7,11 @@ services:
       - "3000:3000"
     volumes:
       - grafana-storage:/var/lib/grafana
+      - ./grafana.ini:/etc/grafana/grafana.ini:ro
       - ./datasource-provisioning.yaml:/etc/grafana/provisioning/datasources/datasource-provisioning.yaml
+      - ./dashboards:/var/lib/grafana/dashboards
+      - ./dashboard-provisioning.yaml:/etc/grafana/provisioning/dashboards/dashboard-provisioning.yaml
+
     environment:
       - GF_SECURITY_ADMIN_USER=admin
       - GF_SECURITY_ADMIN_PASSWORD=admin
@@ -53,6 +57,28 @@ services:
       - type: volume
         source: influxdb2-config
         target: /etc/influxdb2
+
+  network-exporter:
+    build:
+      context: ./network-exporter
+    container_name: network-exporter
+    restart: unless-stopped
+    ports:
+      - "9801:9801"
+    environment:
+      - LISTEN_ADDRESS=:9801
+      - SPEEDTEST_TIMEOUT=90s
+      - SPEEDTEST_ARGS=--progress=no
+
+  switchbot_exporter:
+    image: nasa9084/switchbot-exporter:v0.5.1
+    container_name: switchbot_exporter
+    restart: unless-stopped
+    expose:
+      - 8080
+    environment:
+      SWITCHBOT_OPENTOKEN: your_open_token_here
+      SWITCHBOT_SECRETKEY: your_secret_key_here
 
   time_table_exporter:
     build: ./time_table
