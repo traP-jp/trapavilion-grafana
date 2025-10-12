@@ -44,6 +44,13 @@ type EventCollector struct {
 	descEnd      *prometheus.Desc
 	descDuration *prometheus.Desc
 	descActive   *prometheus.Desc
+
+	// per-room descriptors
+	descRoomNextStart        *prometheus.Desc
+	descRoomSecondsUntilNext *prometheus.Desc
+	descRoomNextInfo         *prometheus.Desc
+	descRoomCurrentRemaining *prometheus.Desc
+	descRoomCurrentInfo      *prometheus.Desc
 }
 
 // NewEventCollector を作る
@@ -71,6 +78,33 @@ func NewEventCollector(eventsPath string) *EventCollector {
 			"1 if event is active at scrape time, 0 otherwise",
 			labels, nil,
 		),
+
+		// per-room descriptors (labels: id,name,location -> location is used to group by room)
+		descRoomNextStart: prometheus.NewDesc(
+			"time_table_room_next_start_seconds",
+			"Next event start time for the room as Unix seconds",
+			labels, nil,
+		),
+		descRoomSecondsUntilNext: prometheus.NewDesc(
+			"time_table_room_seconds_until_next",
+			"Seconds until next event for the room (start_time - now)",
+			labels, nil,
+		),
+		descRoomNextInfo: prometheus.NewDesc(
+			"time_table_room_next_event_info",
+			"Info gauge (1) for the next event in the room (use labels to identify event)",
+			labels, nil,
+		),
+		descRoomCurrentRemaining: prometheus.NewDesc(
+			"time_table_room_current_remaining_seconds",
+			"Remaining seconds for the currently active event in the room",
+			labels, nil,
+		),
+		descRoomCurrentInfo: prometheus.NewDesc(
+			"time_table_room_current_event_info",
+			"Info gauge (1) for the current event in the room (use labels to identify event)",
+			labels, nil,
+		),
 	}
 }
 
@@ -80,6 +114,13 @@ func (c *EventCollector) Describe(ch chan<- *prometheus.Desc) {
 	ch <- c.descEnd
 	ch <- c.descDuration
 	ch <- c.descActive
+
+	// room-level descriptors
+	ch <- c.descRoomNextStart
+	ch <- c.descRoomSecondsUntilNext
+	ch <- c.descRoomNextInfo
+	ch <- c.descRoomCurrentRemaining
+	ch <- c.descRoomCurrentInfo
 }
 
 // Collect implements prometheus.Collector
@@ -115,6 +156,71 @@ func (c *EventCollector) Collect(ch chan<- prometheus.Metric) {
 			active = 1.0
 		}
 		ch <- prometheus.MustNewConstMetric(c.descActive, prometheus.GaugeValue, active, labels...)
+	}
+
+	// room-level aggregation: group events by location (room)
+	rooms := map[string][]Event{}
+	for i := range events {
+		rooms[events[i].Location] = append(rooms[events[i].Location], events[i])
+	}
+
+	for _, evs := range rooms {
+		if len(evs) == 0 {
+			continue
+		}
+		// find next future event (start after now) with earliest start
+		var nextIdx = -1
+		for i := range evs {
+			if evs[i].startTime.IsZero() {
+				continue
+			}
+			if evs[i].startTime.After(now) {
+				if nextIdx == -1 || evs[i].startTime.Before(evs[nextIdx].startTime) {
+					nextIdx = i
+				}
+			}
+		}
+
+		// find current event (contains now). If multiple, pick one with latest end time.
+		var currentIdx = -1
+		for i := range evs {
+			if evs[i].startTime.IsZero() || evs[i].endTime.IsZero() {
+				continue
+			}
+			if now.Equal(evs[i].startTime) || now.Equal(evs[i].endTime) || (now.After(evs[i].startTime) && now.Before(evs[i].endTime)) {
+				if currentIdx == -1 || evs[i].endTime.After(evs[currentIdx].endTime) {
+					currentIdx = i
+				}
+			}
+		}
+
+		// emit next event metrics
+		if nextIdx != -1 {
+			ev := evs[nextIdx]
+			labels := []string{ev.ID, ev.Name, ev.Location}
+			// next start unix seconds
+			ch <- prometheus.MustNewConstMetric(c.descRoomNextStart, prometheus.GaugeValue, float64(ev.startTime.Unix()), labels...)
+			// seconds until next
+			secs := ev.startTime.Sub(now).Seconds()
+			if secs < 0 {
+				secs = 0
+			}
+			ch <- prometheus.MustNewConstMetric(c.descRoomSecondsUntilNext, prometheus.GaugeValue, secs, labels...)
+			// info gauge
+			ch <- prometheus.MustNewConstMetric(c.descRoomNextInfo, prometheus.GaugeValue, 1.0, labels...)
+		}
+
+		// emit current event metrics
+		if currentIdx != -1 {
+			ev := evs[currentIdx]
+			labels := []string{ev.ID, ev.Name, ev.Location}
+			rem := ev.endTime.Sub(now).Seconds()
+			if rem < 0 {
+				rem = 0
+			}
+			ch <- prometheus.MustNewConstMetric(c.descRoomCurrentRemaining, prometheus.GaugeValue, rem, labels...)
+			ch <- prometheus.MustNewConstMetric(c.descRoomCurrentInfo, prometheus.GaugeValue, 1.0, labels...)
+		}
 	}
 }
 
