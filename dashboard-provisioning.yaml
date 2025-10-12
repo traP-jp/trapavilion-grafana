@@ -10,7 +10,7 @@ providers:
     options:
       path: /var/lib/grafana/dashboards/traq
       foldersFromFilesStructure: true
-      
+
   - name: "Main"
     folder: ""
     type: file
@@ -39,4 +39,14 @@ providers:
     allowUiUpdates: false
     options:
       path: /var/lib/grafana/dashboards/discord
+      foldersFromFilesStructure: true
+
+  - name: "Event"
+    folder: ""
+    type: file
+    disableDeletion: true
+    updateIntervalSeconds: 10
+    allowUiUpdates: false
+    options:
+      path: /var/lib/grafana/dashboards/event
       foldersFromFilesStructure: true

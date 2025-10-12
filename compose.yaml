@@ -80,6 +80,13 @@ services:
       SWITCHBOT_OPENTOKEN: your_open_token_here
       SWITCHBOT_SECRETKEY: your_secret_key_here
 
+  time_table_exporter:
+    build: ./time_table
+    container_name: time_table_exporter
+    restart: unless-stopped
+    expose:
+      - "9100"
+
 volumes:
   grafana-storage:
   prometheus-storage:
