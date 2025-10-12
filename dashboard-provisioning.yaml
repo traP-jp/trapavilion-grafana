@@ -50,3 +50,13 @@ providers:
     options:
       path: /var/lib/grafana/dashboards/event
       foldersFromFilesStructure: true
+
+  - name: "Reward"
+    folder: ""
+    type: file
+    disableDeletion: true
+    updateIntervalSeconds: 5
+    allowUiUpdates: false
+    options:
+      path: /var/lib/grafana/dashboards/reward
+      foldersFromFilesStructure: true
