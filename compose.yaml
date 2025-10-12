@@ -76,8 +76,8 @@ services:
     restart: unless-stopped
     expose:
       - 8080
-    env_file:
-      - switchbot.env
+  #    env_file:
+  #      - switchbot.env
 
   time_table_exporter:
     build: ./time_table
@@ -85,6 +85,8 @@ services:
     restart: unless-stopped
     expose:
       - "9100"
+    volumes:
+      - ./events.yaml:/app/events.yaml:ro
 
 volumes:
   grafana-storage:

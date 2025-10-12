@@ -8,8 +8,10 @@ RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-s -w" -o exporter .
 
 # Runtime stage
 FROM alpine:3.22.1
-RUN apk add --no-cache ca-certificates
+RUN apk add --no-cache ca-certificates tzdata \
+	&& cp /usr/share/zoneinfo/Asia/Tokyo /etc/localtime \
+	&& apk del tzdata \
+	&& rm -rf /var/cache/apk/*
 COPY --from=build /src/exporter /usr/local/bin/exporter
-COPY events.yaml /app/events.yaml
 EXPOSE 9100
 ENTRYPOINT ["/usr/local/bin/exporter","-events","/app/events.yaml","-listen",":9100"]
