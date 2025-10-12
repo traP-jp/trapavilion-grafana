@@ -1,4 +1,41 @@
 {
+    "__inputs": [
+        {
+            "name": "DS_YESOREYERAM-INFINITY-DATASOURCE",
+            "label": "yesoreyeram-infinity-datasource",
+            "description": "",
+            "type": "datasource",
+            "pluginId": "yesoreyeram-infinity-datasource",
+            "pluginName": "Infinity"
+        }
+    ],
+    "__elements": {},
+    "__requires": [
+        {
+            "type": "panel",
+            "id": "gauge",
+            "name": "Gauge",
+            "version": ""
+        },
+        {
+            "type": "grafana",
+            "id": "grafana",
+            "name": "Grafana",
+            "version": "12.2.0"
+        },
+        {
+            "type": "panel",
+            "id": "timeseries",
+            "name": "Time series",
+            "version": ""
+        },
+        {
+            "type": "datasource",
+            "id": "yesoreyeram-infinity-datasource",
+            "name": "Infinity",
+            "version": "3.6.0"
+        }
+    ],
     "annotations": {
         "list": [
             {
@@ -18,13 +55,12 @@
     "editable": true,
     "fiscalYearStartMonth": 0,
     "graphTooltip": 0,
-    "id": 0,
     "links": [],
     "panels": [
         {
             "datasource": {
                 "type": "yesoreyeram-infinity-datasource",
-                "uid": "ff0pa0n3hboxsf"
+                "uid": "${DS_YESOREYERAM-INFINITY-DATASOURCE}"
             },
             "fieldConfig": {
                 "defaults": {
@@ -38,7 +74,7 @@
                         "axisColorMode": "text",
                         "axisLabel": "",
                         "axisPlacement": "auto",
-                        "barAlignment": -1,
+                        "barAlignment": 0,
                         "barWidthFactor": 0.6,
                         "drawStyle": "line",
                         "fillOpacity": 20,
@@ -54,7 +90,7 @@
                             "fill": "solid"
                         },
                         "lineWidth": 3,
-                        "pointSize": 9,
+                        "pointSize": 6,
                         "scaleDistribution": {
                             "type": "linear"
                         },
@@ -69,8 +105,7 @@
                             "mode": "off"
                         }
                     },
-                    "decimals": 0,
-                    "fieldMinMax": false,
+                    "fieldMinMax": true,
                     "mappings": [],
                     "thresholds": {
                         "mode": "absolute",
@@ -113,20 +148,19 @@
                 {
                     "columns": [
                         {
-                            "selector": "key",
-                            "text": "Time",
-                            "timestampFormat": "",
+                            "selector": "date",
+                            "text": "Date",
                             "type": "timestamp"
                         },
                         {
                             "selector": "value",
-                            "text": "Date",
+                            "text": "Value",
                             "type": "number"
                         }
                     ],
                     "datasource": {
                         "type": "yesoreyeram-infinity-datasource",
-                        "uid": "grafanacloud-infinity"
+                        "uid": "${DS_YESOREYERAM-INFINITY-DATASOURCE}"
                     },
                     "filters": [],
                     "format": "table",
@@ -155,7 +189,7 @@
         {
             "datasource": {
                 "type": "yesoreyeram-infinity-datasource",
-                "uid": "ff0pa0n3hboxsf"
+                "uid": "${DS_YESOREYERAM-INFINITY-DATASOURCE}"
             },
             "fieldConfig": {
                 "defaults": {
@@ -213,7 +247,7 @@
                     "columns": [],
                     "datasource": {
                         "type": "yesoreyeram-infinity-datasource",
-                        "uid": "grafanacloud-infinity"
+                        "uid": "${DS_YESOREYERAM-INFINITY-DATASOURCE}"
                     },
                     "filters": [],
                     "format": "table",
@@ -240,7 +274,6 @@
             "type": "gauge"
         }
     ],
-    "preload": false,
     "schemaVersion": 42,
     "tags": [],
     "templating": {
@@ -254,5 +287,7 @@
     "timezone": "browser",
     "title": "CTF-traPavilion",
     "uid": "un8p7t9",
-    "version": 4
+    "version": 9,
+    "weekStart": "",
+    "id": null
 }
