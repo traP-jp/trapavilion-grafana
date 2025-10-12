@@ -11,14 +11,14 @@ providers:
       path: /var/lib/grafana/dashboards/traq
       foldersFromFilesStructure: true
 
-  - name: "Main"
+  - name: "traPavilion"
     folder: ""
     type: file
-    disableDeletion: true
+    disableDeletion: false
     updateIntervalSeconds: 10
     allowUiUpdates: true
     options:
-      path: /var/lib/grafana/dashboards/main
+      path: /var/lib/grafana/dashboards/trapavilion
       foldersFromFilesStructure: true
 
   - name: "Network"
